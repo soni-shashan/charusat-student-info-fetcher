@@ -26,8 +26,13 @@ jobs:
     - run: npm install  # Install dependencies
     
     - name: Start Server
-      run: npm start &  # Start the server in the background
+      run: |
+        npm start &  # Start the server in the background
+        sleep 5  # Wait for the server to start
     
+    - name: Check if Server is Running
+      run: curl -f http://localhost:3000 || echo "Server not running"
+
     - name: Install ngrok
       run: |
         # Add the ngrok GPG key and repository
@@ -43,8 +48,7 @@ jobs:
     
     - name: Start ngrok
       run: |
-        ngrok http 3000 > ngrok.log &
-        sleep 10  # Wait for ngrok to start (increased sleep time)
+        ngrok http 3000 --log=stdout &  # Start ngrok and log to stdout
+        sleep 10  # Wait for ngrok to start
         echo "Ngrok log:"
-        cat ngrok.log  # Output the ngrok log for debugging
-        echo "Ngrok URL: $(grep -o 'https://[^ ]*' ngrok.log | head -1)"  # Extract the public URL
+        curl -s http://localhost:4040/api/tunnels  # Fetch ngrok tunnel info
