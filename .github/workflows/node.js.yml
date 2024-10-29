@@ -38,14 +38,16 @@ jobs:
 
     - name: Start Localtunnel
       run: |
-        lt -p 3000 --print-requests &
-        sleep 10  # Wait for Localtunnel to start
-        echo "Localtunnel URL: $(lt -p 3000 --print-requests | grep -o 'https://[^\"]*')"  # Extract the public URL
+        lt --port 3000 --subdomain mytunnelpassword &
+        sleep 10  # Wait for Localtunnel to establish connection
+        echo "Localtunnel URL: https://mytunnelpassword.loca.lt"
 
     - name: Test Endpoint
       run: |
-        PUBLIC_URL=$(lt -p 3000 --print-requests | grep -o 'https://[^\"]*')
-        curl "${PUBLIC_URL}/getInfo?id=1"  # Test the public URL
+        # Wait a moment for Localtunnel to be ready
+        sleep 5
+        # Test the public URL
+        curl "https://mytunnelpassword.loca.lt/getInfo?id=1"  # Replace with your actual endpoint
 
     - name: Keep Alive
       run: |
