@@ -26,8 +26,16 @@ jobs:
       run: npm start &  # Start the server in the background
     - name: Install ngrok
       run: |
-        curl -s https://ngrok.com/download/ngrok-stable-linux-amd64.zip -o ngrok.zip
+        curl -s -o ngrok.zip https://bin.equinox.io/c/111111/ngrok-stable-linux-amd64.zip
+        if [ $? -ne 0 ]; then
+          echo "Error downloading ngrok"
+          exit 1
+        fi
         unzip ngrok.zip
+        if [ $? -ne 0 ]; then
+          echo "Error unzipping ngrok"
+          exit 1
+        fi
         chmod +x ngrok
         sudo mv ngrok /usr/local/bin
     - name: Start ngrok
