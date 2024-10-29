@@ -56,7 +56,7 @@ async function getStudentInfo(studentID) {
 }
 
 // Define a GET endpoint with query parameter
-app.get('/getStudentInfo', async (req, res) => {
+app.get('/getInfo', async (req, res) => {
   const studentID = req.query.id;
 
   if (!studentID) {

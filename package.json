@@ -1,13 +1,12 @@
 {
-    "name": "student-name-fetcher",
-    "version": "1.0.0",
-    "main": "api/getStudentInfo.js",
-    "scripts": {
-      "start": "node api/getStudentInfo.js"
-    },
-    "dependencies": {
-      "express": "^4.17.3",
-      "puppeteer": "^10.0.0"
-    }
+  "name": "get-charusat-student-info-by-id",
+  "version": "1.0.0",
+  "main": "api/getStudentInfo.js",
+  "scripts": {
+    "start": "node api/getStudentInfo.js"
+  },
+  "dependencies": {
+    "express": "^4.17.3",
+    "puppeteer": "^10.0.0"
   }
-  
+}
