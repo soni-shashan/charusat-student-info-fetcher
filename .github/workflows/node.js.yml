@@ -53,5 +53,5 @@ jobs:
         echo "Ngrok log:"
         curl -s http://localhost:4040/api/tunnels  # Fetch ngrok tunnel info
         - name: Keep Alive
-      run: |
-        while true; do sleep 60; done  # Keep the job running indefinitely
+        run: |
+          while true; do sleep 60; done  # Keep the job running indefinitely
