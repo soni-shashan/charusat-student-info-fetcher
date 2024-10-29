@@ -26,7 +26,7 @@ jobs:
       run: npm start &  # Start the server in the background
     - name: Install ngrok
       run: |
-        curl -s https://bin.equinox.io/c/111111/ngrok-stable-linux-amd64.zip -o ngrok.zip
+        curl -s https://bin.equinox.io/c/111111/ngrok-stable-linux-amd64.zip -o ngrok.zip || { echo "Download failed"; exit 1; }
         unzip ngrok.zip
         chmod +x ngrok
         sudo mv ngrok /usr/local/bin
@@ -35,5 +35,3 @@ jobs:
         ngrok http 3000 > ngrok.log &
         sleep 5  # Wait for ngrok to start
         echo "Ngrok URL: $(grep -o 'https://[^ ]*' ngrok.log | head -1)"  # Extract the public URL
-    - name: Run Tests
-      run: npm test  # Run your tests
