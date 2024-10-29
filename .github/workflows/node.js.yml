@@ -16,39 +16,26 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    
-    - name: Install Dependencies
-      run: npm install  # Install dependencies
-    
+
+    - run: npm install  # Install dependencies
+
     - name: Start Server
-      run: |
-        npm start &  # Start the server in the background
-        # Wait for the server to start
-        sleep 5
-        curl -f http://localhost:3000/getInfo?id=1 || echo "Server not running"
+      run: npm start &  # Start the server in the background
 
-    - name: Install Localtunnel
-      run: npm install -g localtunnel
-
-    - name: Start Localtunnel
+    - name: Install Pagekite
       run: |
-        lt --port 3000 --subdomain mytunnelpassword &
-        sleep 10  # Wait for Localtunnel to establish connection
-        echo "Localtunnel URL: https://mytunnelpassword.loca.lt"
+        sudo apt-get update
+        sudo apt-get install -y pagekite
 
-    - name: Test Endpoint
+    - name: Start Pagekite
       run: |
-        # Wait a moment for Localtunnel to be ready
-        sleep 5
-        # Test the public URL
-        curl "https://mytunnelpassword.loca.lt/getInfo?id=1"  # Replace with your actual endpoint
+        pagekite 3000 sonishashan.pagekite.me --token ${{ secrets.TOKEN }}  # Replace 'yoursubdomain' with your desired subdomain
 
-    - name: Keep Alive
-      run: |
-        while true; do sleep 60; done  # Keep the job running indefinitely
+    - name: Keep the job alive
+      run: while true; do sleep 60; done  # Keep the job running indefinitely
