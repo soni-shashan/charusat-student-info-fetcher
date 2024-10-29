@@ -1,45 +1,48 @@
-name: CI
+name: Node.js CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [22.x]  # Set to run only for Node.js 22.x
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.x'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Start server
-        run: npm start &
-
-      - name: Install ngrok
-        run: |
-          # Add the ngrok GPG key
-          curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
-          | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null \
-          && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" \
-          | sudo tee /etc/apt/sources.list.d/ngrok.list \
-          && sudo apt update \
-          && sudo apt install -y ngrok
-
-      - name: Configure ngrok with auth token
-        run: ngrok config add-authtoken ${{ secrets.token }}
-
-      - name: Start ngrok
-        run: |
-          ngrok http 3000 > ngrok.log &
-          sleep 5  # Wait for ngrok to initialize
-          echo "Ngrok URL: $(grep -o 'https://[^ ]*' ngrok.log | head -1)"
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - run: npm install  # Install dependencies
+    
+    - name: Start Server
+      run: npm start &  # Start the server in the background
+    
+    - name: Install ngrok
+      run: |
+        # Add the ngrok GPG key and repository
+        curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
+        | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null \
+        && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" \
+        | sudo tee /etc/apt/sources.list.d/ngrok.list \
+        && sudo apt update \
+        && sudo apt install -y ngrok
+    
+    - name: Configure ngrok with auth token
+      run: ngrok config add-authtoken ${{ secrets.token }}
+    
+    - name: Start ngrok
+      run: |
+        ngrok http 3000 > ngrok.log &
+        sleep 5  # Wait for ngrok to start
+        echo "Ngrok URL: $(grep -o 'https://[^ ]*' ngrok.log | head -1)"  # Extract the public URL
