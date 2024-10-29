@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [22.x]  # Set to run only for Node.js 22.x
 
     steps:
     - uses: actions/checkout@v4
@@ -26,14 +26,16 @@ jobs:
     - run: npm install  # Install dependencies
     
     - name: Start Server
-      run: npm start &  # Start the server in the background
-      # Wait for the server to start
       run: |
-        sleep 5
-        curl -f http://localhost:3000 || echo "Server not running"
+        npm start &  # Start the server in the background
+        sleep 5  # Wait for the server to start
+    
+    - name: Check if Server is Running
+      run: curl -f http://localhost:3000 || echo "Server not running"
 
     - name: Install ngrok
       run: |
+        # Add the ngrok GPG key and repository
         curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
         | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null \
         && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" \
@@ -48,8 +50,8 @@ jobs:
       run: |
         ngrok http 3000 --log=stdout &  # Start ngrok and log to stdout
         sleep 10  # Wait for ngrok to start
-        echo "Ngrok URL: $(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')"  # Extract the public URL
-
-    - name: Keep Alive
+        echo "Ngrok log:"
+        curl -s http://localhost:4040/api/tunnels  # Fetch ngrok tunnel info
+        - name: Keep Alive
       run: |
         while true; do sleep 60; done  # Keep the job running indefinitely
