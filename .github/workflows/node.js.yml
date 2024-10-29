@@ -21,7 +21,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm install  # Only use npm install
-    - run: npm start &  # Start the server in the background
-    - run: sleep 5  # Wait for the server to start
-    - run: npm test  # Run your tests
+    - run: npm install  # Install dependencies
+    - name: Start Server
+      run: npm start &  # Start the server in the background
+    - name: Install ngrok
+      run: |
+        curl -s https://bin.equinox.io/c/111111/ngrok-stable-linux-amd64.zip > ngrok.zip && unzip ngrok.zip && chmod +x ngrok && sudo mv ngrok /usr/local/bin
+    - name: Expose Server with ngrok
+      run: |
+        ngrok http 3000 > ngrok.log &  # Start ngrok in the background
+        sleep 5  # Wait for ngrok to set up
+        echo "Ngrok URL: $(grep -o 'https://[^ ]*' ngrok.log | head -1)"  # Extract the public URL
