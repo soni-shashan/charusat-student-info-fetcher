@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "api/getStudentInfo.js",
   "scripts": {
-    "start": "node api/getStudentInfo.js"
+    "start": "node api/getStudentInfo.js",
+    "clean-run": "node runScript.js"
   },
   "dependencies": {
     "express": "^4.17.3",
