@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHARUSAT Student Info Fetcher</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>CHARUSAT Student Info Fetcher</h1>
+        </div>
+    </header>
+
+    <!-- Add this after the header section -->
+    <div class="features-section container">
+        <h2>Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-search"></i>
+                <h3>Quick Search</h3>
+                <p>Get student information instantly with just an ID</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Secure</h3>
+                <p>Safe and secure information retrieval</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-bolt"></i>
+                <h3>Fast</h3>
+                <p>Optimized for quick response times</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Documentation Section -->
+    <div class="api-docs container">
+        <h2>API Documentation</h2>
+        <div class="content">
+            <h3>Endpoint</h3>
+            <div class="code-block">
+                <pre>GET https://getcharusatstudentinfo.vercel.app/getInfo?id={studentId}</pre>
+                <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+            </div>
+            
+            <h3>Parameters</h3>
+            <table class="params-table">
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Required</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>id</td>
+                    <td>string</td>
+                    <td>Yes</td>
+                    <td>Student ID number</td>
+                </tr>
+            </table>
+
+            <h3>Response Format</h3>
+            <div class="code-block">
+                <pre>
+                {
+                    "responseCode": "200",
+                    "studentName": "Student Name",
+                    "instituteName": "Institute Name",
+                    "departmentName": "Department Name",
+                    "currentSemester": "Current Semester",
+                    "timeTaken": "Time taken in seconds"
+                }
+                </pre>
+                <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+            </div>
+
+            <h3>Example API Calls</h3>
+            
+            <!-- cURL -->
+            <h4>cURL</h4>
+            <div class="code-block">
+                <pre>
+    curl -X GET "https://getcharusatstudentinfo.vercel.app/getInfo?id=23csxxx"
+                </pre>
+                <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+            </div>
+
+            <!-- JavaScript -->
+            <h4>JavaScript (Fetch)</h4>
+            <div class="code-block">
+                <pre>
+    fetch('https://getcharusatstudentinfo.vercel.app/getInfo?id=23csxxx')
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+                </pre>
+                <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+            </div>
+
+            <!-- Python -->
+            <h4>Python (requests)</h4>
+            <div class="code-block">
+                <pre>
+    import requests
+
+    url = "https://getcharusatstudentinfo.vercel.app/getInfo"
+    params = {"id": "23csxxx"}
+
+    response = requests.get(url, params=params)
+    data = response.json()
+    print(data)
+                </pre>
+                <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+            </div>
+
+            <!-- PHP -->
+            <h4>PHP</h4>
+            <div class="code-block">
+                <pre>
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, 'https://getcharusatstudentinfo.vercel.app/getInfo?id=23csxxx');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    $data = json_decode($response, true);
+    curl_close($ch);
+                </pre>
+                <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+            </div>
+
+            <!-- Node.js -->
+            <h4>Node.js (Axios)</h4>
+            <div class="code-block">
+                <pre>
+    const axios = require('axios');
+
+    async function getStudentInfo() {
+        try {
+            const response = await axios.get(
+                'https://getcharusatstudentinfo.vercel.app/getInfo?id=23csxxx'
+            );
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+                </pre>
+                <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content">
+            <h2>Welcome to CHARUSAT Student Info Fetcher</h2>
+            <p>This tool allows you to quickly retrieve information about CHARUSAT students using their student ID.</p>
+
+            <h3>How to Use:</h3>
+            <ol>
+                <li>Enter the student ID in the form below.</li>
+                <li>Click on "Get Info" to fetch the student's details.</li>
+                <li>The information will be displayed below the form.</li>
+            </ol>
+
+            <div id="studentForm">
+                <h3>Get Student Information</h3>
+                <input type="text" id="studentId" placeholder="Enter Student ID">
+                <button onclick="getStudentInfo()">Get Info</button>
+            </div>
+
+            <div id="result"></div>
+        </div>
+
+        <div class="content">
+            <h2>About the Developer</h2>
+            <p>As a dedicated B.Tech student specializing in Computer Science and Engineering, I am passionate about leveraging technology to solve complex problems and enhance user experiences. My academic journey, combined with hands-on experience in software development, has equipped me with a solid foundation in programming, machine learning, artificial intelligence, data science, and emerging technologies.</p>
+            <p>Contact: mr.shashansoni@gmail.com</p>
+            <p>GitHub: <a href="https://github.com/soni-shashan/" target="_blank">soni-shashan</a></p>
+        </div>
+    </div>
+
+    <div class="faq-section container">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h3>What is a Student ID?</h3>
+                <p>A Student ID is your unique identification number assigned by CHARUSAT University.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How do I find my Student ID?</h3>
+                <p>You can find your Student ID on your university ID card or admission documents.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Is this service official?</h3>
+                <p>This is an unofficial tool created to help students easily access their information.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 CHARUSAT Student Info Fetcher. Developed by Shashan Lumbhani</p>
+    </footer>
+
+    <script src="./index.js"></script>
+</body>
+
+</html>

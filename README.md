@@ -48,37 +48,91 @@ The application exposes a single GET endpoint:
 
 Replace `<student_id>` with the actual student ID you want to query.
 
-### Response Format
+## CHARUSAT Student Info Fetcher API Documentation
+Welcome to the CHARUSAT Student Info Fetcher API! This API allows you to retrieve information about CHARUSAT students using their unique student ID.
 
-The API returns a JSON response with the following structure:
+## Features
+
+- **Quick Search**: Get student information instantly with just an ID.
+- **Secure**: Safe and secure information retrieval.
+- **Fast**: Optimized for quick response times.
+
+## API Endpoint
+
+### Get Student Information
+
+**Endpoint**: ```bash GET https://getcharusatstudentinfo.vercel.app/getInfo?id={studentId}```
+
+
+### Parameters
+
+| Parameter | Type   | Required | Description                |
+|-----------|--------|----------|----------------------------|
+| id        | string | Yes      | Student ID number          |
+
+## Response Format
+
+The API returns a JSON object with the following structure:
 
 ```json
 {
-  "responseCode": "200",
-  "studentName": "Student Name",
-  "instituteName": "Institute Name",
-  "departmentName": "Department Name",
-  "currentSemester": "Current Semester",
-  "timeTaken": "Time taken in seconds"
+    "responseCode": "200",
+    "studentName": "Student Name",
+    "instituteName": "Institute Name",
+    "departmentName": "Department Name",
+    "currentSemester": "Current Semester",
+    "timeTaken": "Time taken in seconds"
 }
 ```
 
-
-If the student is not found, it returns:
-```json
-{
-  "responseCode": "404",
-  "error": "Student Not Found",
-  "timeTaken": "Time taken in seconds"
-}
-```
-### Clean Run Script
-To perform a clean installation and run, use:
+### Example API Calls
+#### cURL
   ```bash
-  npm run clean-run
+  curl -X GET "https://getcharusatstudentinfo.vercel.app/getInfo?id=23csxxx"
   ```
-#### This script will:
-- Delete the node_modules directory
-- Remove package-lock.json
-- Reinstall dependencies
-- Start the server
+
+#### JavaScript (Fetch)
+  ```javascript
+  fetch('https://getcharusatstudentinfo.vercel.app/getInfo?id=23csxxx')
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
+  ```
+
+#### Python (requests)
+```python
+import requests
+
+url = "https://getcharusatstudentinfo.vercel.app/getInfo"
+params = {"id": "23csxxx"}
+
+response = requests.get(url, params=params)
+data = response.json()
+print(data)
+```
+
+#### PHP
+```php
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://getcharusatstudentinfo.vercel.app/getInfo?id=23csxxx');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+$data = json_decode($response, true);
+curl_close($ch);
+```
+
+#### Node.js (Axios)
+```javascript
+const axios = require('axios');
+
+async function getStudentInfo() {
+    try {
+        const response = await axios.get(
+            'https://getcharusatstudentinfo.vercel.app/getInfo?id=23csxxx'
+        );
+        console.log(response.data);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+```
