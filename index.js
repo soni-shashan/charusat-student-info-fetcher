@@ -31,7 +31,7 @@ async function getStudentInfo() {
     resultDiv.innerHTML = '<p>Loading... Please wait...</p>';
 
     try {
-        const response = await fetch(`./getInfo?id=${studentId}`, {
+        const response = await fetch(`https://getcharusatstudentinfo.vercel.app/getInfo?id=${studentId}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
