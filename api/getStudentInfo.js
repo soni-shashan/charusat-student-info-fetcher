@@ -1,18 +1,24 @@
-const express = require('express');
-const puppeteer = require('puppeteer');
+const chrome = require('@sparticuz/chromium')
+const puppeteer = require('puppeteer-core')
 
-const app = express();
-const PORT = 3000;
+const LOCAL_CHROME_EXECUTABLE = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+
 
 async function getStudentInfo(studentID) {
-  const browser = await puppeteer.launch({ headless: true });
-  const page = await browser.newPage();
-
-  // Capture the start time
-  const startTime = Date.now();
-
+  let browser = null;
   try {
-    await page.goto('https://charusat.edu.in:912/FeesPaymentApp/', { waitUntil: 'domcontentloaded' });
+    browser = await puppeteer.launch({
+      args: chrome.args,
+      defaultViewport: chrome.defaultViewport,
+      executablePath: await chrome.executablePath(),
+      headless: 'new',
+      ignoreHTTPSErrors: true
+    });
+
+    const page = await browser.newPage();
+    const startTime = Date.now();
+
+    await page.goto('https://charusat.edu.in:912/FeesPaymentApp/', { waitUntil: 'networkidle0' });
     await page.type('#txtStudentID', studentID);
     await page.click('#btnSearch');
 
@@ -21,10 +27,8 @@ async function getStudentInfo(studentID) {
       page.waitForSelector('.swal-modal', { visible: true, timeout: 10000 }).then(() => 'notFound')
     ]);
 
-    // Capture the end time
     const endTime = Date.now();
-    const totalTime = endTime - startTime; // Calculate total time taken
-    const timeTaken=String(totalTime/1000)+" s";
+    const timeTaken = `${(endTime - startTime) / 1000} s`;
 
     if (result === 'studentFound') {
       const responseCode = "200";
@@ -32,31 +36,31 @@ async function getStudentInfo(studentID) {
       const instituteName = await page.$eval('#lblInstitute', el => el.innerText);
       const departmentName = await page.$eval('#lblDegree', el => el.innerText);
       const currentSemester = await page.$eval('#lblCurrSemester', el => el.innerText);
-      await browser.close();
       return {
         responseCode,
         studentName,
         instituteName,
         departmentName,
         currentSemester,
-        timeTaken// Include total time in response
+        timeTaken
       };
     } else if (result === 'notFound') {
       const responseCode = "404";
       const error = "Student Not Found";
-      await browser.close();
-      return { responseCode, error, timeTaken }; // Include total time in response
+      return { responseCode, error, timeTaken };
     }
 
   } catch (error) {
     console.error("An error occurred:", error);
-    await browser.close();
     throw error;
+  } finally {
+    if (browser !== null) {
+      await browser.close();
+    }
   }
 }
 
-// Define a GET endpoint with query parameter
-app.get('/getInfo', async (req, res) => {
+module.exports = async (req, res) => {
   const studentID = req.query.id;
 
   if (!studentID) {
@@ -67,11 +71,7 @@ app.get('/getInfo', async (req, res) => {
     const data = await getStudentInfo(studentID);
     res.json(data);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch student name" });
+    console.error("Error in API handler:", error);
+    res.status(500).json({ error: "Failed to fetch student information", details: error.message });
   }
-});
-
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+};
