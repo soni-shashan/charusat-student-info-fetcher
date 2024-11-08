@@ -1,8 +1,6 @@
 const chrome = require('@sparticuz/chromium')
 const puppeteer = require('puppeteer-core')
 
-const LOCAL_CHROME_EXECUTABLE = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-
 
 async function getStudentInfo(studentID) {
   let browser = null;
@@ -23,8 +21,8 @@ async function getStudentInfo(studentID) {
     await page.click('#btnSearch');
 
     const result = await Promise.race([
-      page.waitForSelector('#lblStudentName', { visible: true, timeout: 10000 }).then(() => 'studentFound'),
-      page.waitForSelector('.swal-modal', { visible: true, timeout: 10000 }).then(() => 'notFound')
+      page.waitForSelector('#lblStudentName', { visible: true }).then(() => 'studentFound'),
+      page.waitForSelector('.swal-modal', { visible: true }).then(() => 'notFound')
     ]);
 
     const endTime = Date.now();
