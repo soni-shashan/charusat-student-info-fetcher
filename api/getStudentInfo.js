@@ -21,7 +21,7 @@ async function getStudentInfo(studentID) {
     await page.click('#ContentPlaceHolder1_btnSearch');
 
     const result = await Promise.race([
-      page.waitForSelector('#ContentPlaceHolder1_txtStudentID', { visible: true }).then(() => 'studentFound'),
+      page.waitForSelector('#ContentPlaceHolder1_txtStudentName', { visible: true }).then(() => 'studentFound'),
       page.waitForSelector('.swal-modal', { visible: true }).then(() => 'notFound')
     ]);
 
