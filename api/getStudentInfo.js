@@ -16,12 +16,12 @@ async function getStudentInfo(studentID) {
     const page = await browser.newPage();
     const startTime = Date.now();
 
-    await page.goto('https://charusat.edu.in:912/FeesPaymentApp/', { waitUntil: 'networkidle0' });
-    await page.type('#txtStudentID', studentID);
-    await page.click('#btnSearch');
+    await page.goto('https://support.charusat.edu.in/FeesPaymentApp/frmpayment.aspx', { waitUntil: 'networkidle0' });
+    await page.type('#ContentPlaceHolder1_txtStudentID', studentID);
+    await page.click('#ContentPlaceHolder1_btnSearch');
 
     const result = await Promise.race([
-      page.waitForSelector('#lblStudentName', { visible: true }).then(() => 'studentFound'),
+      page.waitForSelector('#ContentPlaceHolder1_txtStudentID', { visible: true }).then(() => 'studentFound'),
       page.waitForSelector('.swal-modal', { visible: true }).then(() => 'notFound')
     ]);
 
@@ -30,10 +30,10 @@ async function getStudentInfo(studentID) {
 
     if (result === 'studentFound') {
       const responseCode = "200";
-      const studentName = await page.$eval('#lblStudentName', el => el.innerText);
-      const instituteName = await page.$eval('#lblInstitute', el => el.innerText);
-      const departmentName = await page.$eval('#lblDegree', el => el.innerText);
-      const currentSemester = await page.$eval('#lblCurrSemester', el => el.innerText);
+      const studentName = await page.$eval('#ContentPlaceHolder1_txtStudentName', el => el.innerText);
+      const instituteName = await page.$eval('#ContentPlaceHolder1_txtInstitute', el => el.innerText);
+      const departmentName = await page.$eval('#ContentPlaceHolder1_txtDegree', el => el.innerText);
+      const currentSemester = await page.$eval('#ContentPlaceHolder1_txtCurrSemester', el => el.innerText);
       return {
         responseCode,
         studentName,
