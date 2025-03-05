@@ -22,7 +22,7 @@ async function getStudentInfo(studentID) {
 
     const result = await Promise.race([
       page.waitForSelector('#ContentPlaceHolder1_txtStudentName', { visible: true }).then(() => 'studentFound'),
-      page.waitForSelector('.swal-modal', { visible: true }).then(() => 'notFound')
+      page.waitForSelector('.sweet-alert', { visible: true }).then(() => 'notFound')
     ]);
 
     const endTime = Date.now();
