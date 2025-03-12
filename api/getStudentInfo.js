@@ -22,8 +22,10 @@ async function getStudentInfo(studentID) {
 
     const result = await Promise.race([
       page.waitForSelector('#ContentPlaceHolder1_txtStudentName', { visible: true }).then(() => 'studentFound'),
-      page.waitForSelector('.sweet-alert', { visible: true }).then(() => 'notFound')
+      page.waitForSelector('.sweet-alert', { visible: true }).then(() => 'notFound'),
+      new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout waiting for result")), 10000))
     ]);
+    
 
     const endTime = Date.now();
     const timeTaken = `${(endTime - startTime) / 1000} s`;
