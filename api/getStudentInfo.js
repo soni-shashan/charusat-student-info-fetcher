@@ -32,10 +32,10 @@ async function getStudentInfo(studentID) {
 
     if (result === 'studentFound') {
       const responseCode = "200";
-      const studentName = await page.$eval('#ContentPlaceHolder1_txtStudentName', el => el.innerText);
-      const instituteName = await page.$eval('#ContentPlaceHolder1_txtInstitute', el => el.innerText);
-      const departmentName = await page.$eval('#ContentPlaceHolder1_txtDegree', el => el.innerText);
-      const currentSemester = await page.$eval('#ContentPlaceHolder1_txtCurrSemester', el => el.innerText);
+      const studentName = await page.$eval('#ContentPlaceHolder1_txtStudentName', el => el.value);
+      const instituteName = await page.$eval('#ContentPlaceHolder1_txtInstitute', el => el.value);
+      const departmentName = await page.$eval('#ContentPlaceHolder1_txtDegree', el => el.value);
+      const currentSemester = await page.$eval('#ContentPlaceHolder1_txtCurrSemester', el => el.value);
       return {
         responseCode,
         studentName,
