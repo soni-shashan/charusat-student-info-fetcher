@@ -2,6 +2,18 @@
 
 This project is a web application that fetches student information from CHARUSAT University using a student ID. It uses Puppeteer for web scraping and Express.js for creating an API endpoint.
 
+## 📌 Project Overview
+The CHARUSAT Student Info Fetcher is a serverless web API built using Node.js, Puppeteer, and Chromium (via @sparticuz/chromium) that scrapes student information from the CHARUSAT University Fee Payment Portal. Given a valid student ID, it returns relevant student details like name, institute, department, and current semester.
+
+## 🧠 Features
+- 🔍 Student Data Lookup via ID
+- 🖥️ Headless Browser Automation with Puppeteer
+- ⚡ Fast Response Time (optimized for under 10 seconds)
+- 🌐 CORS-Enabled API for integration with any frontend
+- 📤 Serverless Deployment on Vercel
+- 🔐 Secure Data Handling (only necessary fields are extracted)
+
+
 ## Features
 
 - Fetch student information using student ID
